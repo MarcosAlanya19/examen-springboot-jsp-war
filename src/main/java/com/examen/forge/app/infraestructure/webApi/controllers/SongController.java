@@ -75,15 +75,15 @@ public class SongController {
   }
 
   // Contribuir Cancion
-  @GetMapping({ AppConfig.ROUTE_EDIT_SONG + "{id}" })
+  @GetMapping({ AppConfig.ROUTE_EDIT_SONG + "/{id}" })
   public String editCandidate(@PathVariable Long id, Model model) {
     SongEntity song = songService.getById(id);
-    model.addAttribute("song", song);
+    model.addAttribute(AppConfig.MA_SONG, song);
 
     return AppConfig.JSP_EDIT_SONG;
   }
 
-  @PostMapping({ AppConfig.POST_EDIT_SONG + "{id}" })
+  @PostMapping({ AppConfig.POST_EDIT_SONG + "/{id}" })
   public String updateCandidate(@PathVariable Long id, @ModelAttribute SongEntity song) {
     SongEntity existingSong = songService.getById(id);
 
@@ -95,6 +95,6 @@ public class SongController {
       songService.create(existingSong);
     }
 
-    return "redirect:/" + AppConfig.ROUTE_DETAIL_SONG + id;
+    return "redirect:/" + AppConfig.ROUTE_DETAIL_SONG + "/" + id;
   }
 }

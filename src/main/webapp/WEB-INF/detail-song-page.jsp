@@ -1,5 +1,5 @@
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> <%@ page language="java"
-contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %> <%@ page import="com.examen.forge.config.AppConfig" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %> <%@ taglib prefix="form"
+uri="http://www.springframework.org/tags/form" %> <%@ page import="com.examen.forge.config.AppConfig" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -15,6 +15,6 @@ contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %> <%@ page import="c
     <p>Origin: <c:out value="${song.lyrics}" /></p>
 
     <a href="/${AppConfig.ROUTE_HOME}">Regresar a inicio</a>
-    <a href="${AppConfig.ROUTE_EDIT_SONG}/${song.id}">Contribuir</a>
+    <a href="/${AppConfig.ROUTE_EDIT_SONG}/${song.id}">Contribuir</a>
   </body>
 </html>
