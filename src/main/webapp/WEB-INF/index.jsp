@@ -14,21 +14,39 @@ import="com.examen.forge.config.AppConfig" %>
     />
   </head>
   <body>
-    <div class="container mt-5">
-      <h1>Ingreso</h1>
-      <p class="mb-4"><c:out value="${error}" /></p>
-      <form method="POST" action="${pageContext.request.contextPath}/${AppConfig.POST_LOGIN_USER}" class="needs-validation">
-        <div class="mb-3">
-          <label for="email" class="form-label">Email</label>
-          <input type="text" id="email" name="email" class="form-control" required />
+    <style>
+      .error {
+        color: red;
+      }
+
+      .centered-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 80vh;
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      }
+    </style>
+    <div class="container-fluid">
+      <div class="row w-100 justify-content-center align-items-center" style="height: 100vh">
+        <div class="col-lg-4 centered-container">
+          <h1 class="text-center mb-5">Ingreso</h1>
+          <form method="POST" action="${pageContext.request.contextPath}/${AppConfig.POST_LOGIN_USER}" class="needs-validation">
+            <div class="mb-3 w-100">
+              <label for="email" class="form-label">Email</label>
+              <input type="text" id="email" name="email" class="form-control mb-1 py-3 w-100" required />
+            </div>
+            <div class="mb-3 w-100">
+              <label for="password" class="form-label">Contraseña</label>
+              <input type="password" id="password" name="password" class="form-control mb-1 py-3" required />
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Acceso</button>
+          </form>
+          <p class="mt-3">¿No tienes cuenta? <a href="/${AppConfig.ROUTE_REGISTRATION}" class="mt-3">Registro</a></p>
         </div>
-        <div class="mb-3">
-          <label for="password" class="form-label">Constraseña</label>
-          <input type="password" id="password" name="password" class="form-control" required />
-        </div>
-        <input type="submit" value="Acceso!" class="btn btn-primary" />
-      </form>
-      <a href="/${AppConfig.ROUTE_REGISTRATION}" class="mt-3">Registro</a>
+      </div>
     </div>
 
     <script
