@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.examen.forge.app.application.services.ContributionService;
 import com.examen.forge.app.application.services.SongService;
 import com.examen.forge.app.application.services.UserService;
+import com.examen.forge.app.domain.entities.ContributionEntity;
 import com.examen.forge.app.domain.entities.SongEntity;
 import com.examen.forge.app.domain.entities.UserEntity;
 import com.examen.forge.config.AppConfig;
@@ -26,6 +28,9 @@ public class SongController {
 
   @Autowired
   UserService userService;
+
+  @Autowired
+  ContributionService contributionService;
 
   // Registro de una cancion
   @GetMapping({ AppConfig.ROUTE_ADD_SONG })
@@ -51,7 +56,7 @@ public class SongController {
       return "redirect:/" + AppConfig.ROUTE_HOME;
     } catch (DataIntegrityViolationException ex) {
       model.addAttribute("errorMessage", "El nombre ya está en uso.");
-      return AppConfig.JSP_ADD_SONG; // Devuelve la vista de creación de canciones con error específico
+      return AppConfig.JSP_ADD_SONG;
     }
   }
 
@@ -65,26 +70,36 @@ public class SongController {
       UserEntity user = song.getCreatorUser();
       model.addAttribute("user", user);
 
-      Long userId = (Long) session.getAttribute(AppConfig.SESSION_USER); // Obtiene el ID del usuario de la sesión
+      Long userId = (Long) session.getAttribute(AppConfig.SESSION_USER);
       if (userId != null) {
         model.addAttribute("userIdInSession", userId);
       }
     }
 
-    return AppConfig.JSP_DETAIL_SONG; // Nombre de la página de detalle
+    return AppConfig.JSP_DETAIL_SONG;
   }
 
   // Contribuir Cancion
   @GetMapping({ AppConfig.ROUTE_EDIT_SONG + "/{id}" })
-  public String editCandidate(@PathVariable Long id, Model model) {
+  public String editCandidate(@PathVariable Long id, Model model, HttpSession session) {
     SongEntity song = songService.getById(id);
     model.addAttribute(AppConfig.MA_SONG, song);
+
+    if (song != null) {
+      UserEntity user = song.getCreatorUser();
+      model.addAttribute(AppConfig.MA_USER, user);
+
+      Long userId = (Long) session.getAttribute(AppConfig.SESSION_USER);
+      if (userId != null) {
+        model.addAttribute("userIdInSession", userId);
+      }
+    }
 
     return AppConfig.JSP_EDIT_SONG;
   }
 
   @PostMapping({ AppConfig.POST_EDIT_SONG + "/{id}" })
-  public String updateCandidate(@PathVariable Long id, @ModelAttribute SongEntity song) {
+  public String updateSong(@PathVariable Long id, @ModelAttribute SongEntity song, HttpSession session) {
     SongEntity existingSong = songService.getById(id);
 
     if (existingSong != null) {
@@ -93,15 +108,17 @@ public class SongController {
       existingSong.setLyrics(song.getLyrics());
 
       songService.create(existingSong);
+
+      Long userId = (Long) session.getAttribute(AppConfig.SESSION_USER);
+      UserEntity currentUser = userService.getById(userId);
+
+      ContributionEntity contribution = new ContributionEntity();
+      contribution.setContributingUser(currentUser);
+      contribution.setSong(existingSong);
+
+      contributionService.create(contribution);
     }
 
     return "redirect:/" + AppConfig.ROUTE_DETAIL_SONG + "/" + id;
-  }
-
-  // Eliminar song
-  @PostMapping({ AppConfig.POST_DELETE_SONG + "/{id}" })
-  public String deleteCandidate(@PathVariable Long id) {
-    songService.deleteById(id);
-    return "redirect:/" + AppConfig.ROUTE_HOME;
   }
 }

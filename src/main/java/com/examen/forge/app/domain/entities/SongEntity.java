@@ -1,16 +1,15 @@
 package com.examen.forge.app.domain.entities;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.examen.forge.app.infraestructure.shared.BaseEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -41,7 +40,6 @@ public class SongEntity extends BaseEntity {
   @JoinColumn(name = "creator_user_id")
   private UserEntity creatorUser;
 
-  @ManyToMany
-  @JoinTable(name = "song_contributor", joinColumns = @JoinColumn(name = "song_id"), inverseJoinColumns = @JoinColumn(name = "contributor_user_id"))
-  private Set<UserEntity> contributors = new HashSet<>();
+  @OneToMany(mappedBy = "song")
+  private List<ContributionEntity> contributions = new ArrayList<>();
 }
