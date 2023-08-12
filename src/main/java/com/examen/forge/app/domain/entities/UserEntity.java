@@ -23,21 +23,23 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class UserEntity extends BaseEntity {
-  @NotNull(message = "Email cannot be null")
-  @NotBlank(message = "Email must not be blank")
-  @Size(min = 5, message = "Name must be greater than 5 characters")
+  @NotNull(message = "El correo electrónico no puede ser nulo")
+  @NotBlank(message = "El correo electrónico no puede ser nulo")
+  @Size(min = 5, message = "El nombre debe tener más de 5 caracteres")
   private String name;
 
-  @NotNull(message = "Email cannot be null")
-  @NotBlank(message = "Email must not be blank")
-  @Email(message = "Email must be valid")
+  @NotNull(message = "El correo electrónico no puede ser nulo")
+  @NotBlank(message = "El correo electrónico no puede ser nulo")
+  @Email(message = "El email debe ser válido")
   @Column(unique = true)
   private String email;
 
-  @Size(min = 5, message = "Password must be greater than 5 characters")
+  @Size(min = 5, message = "La contraseña debe tener más de 5 caracteres")
   private String password;
 
   @Transient
+  @NotNull(message = "La confirmación de contraseña no puede ser nula")
+  @Size(min = 5, message = "La confirmación de contraseña debe tener más de 5 caracteres")
   private String confirm;
 
   @OneToMany(mappedBy = "creatorUser")

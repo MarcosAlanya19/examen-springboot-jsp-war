@@ -68,7 +68,7 @@ public class UserController {
       session.setAttribute(AppConfig.SESSION_USER, userByEmail.getId());
       return "redirect:/" + AppConfig.ROUTE_HOME;
     } else {
-      model.addAttribute("error", "Invalid credentials. Please try again.");
+      model.addAttribute("error", "Credenciales no válidas. Inténtalo de nuevo.");
       return AppConfig.JSP_LOGIN;
     }
   }

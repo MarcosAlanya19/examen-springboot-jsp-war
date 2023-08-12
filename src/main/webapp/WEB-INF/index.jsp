@@ -23,12 +23,12 @@ import="com.examen.forge.config.AppConfig" %>
           <input type="text" id="email" name="email" class="form-control" required />
         </div>
         <div class="mb-3">
-          <label for="password" class="form-label">Password</label>
+          <label for="password" class="form-label">Constraseña</label>
           <input type="password" id="password" name="password" class="form-control" required />
         </div>
-        <input type="submit" value="Login!" class="btn btn-primary" />
+        <input type="submit" value="Acceso!" class="btn btn-primary" />
       </form>
-      <a href="/${AppConfig.ROUTE_REGISTRATION}" class="mt-3">Registration</a>
+      <a href="/${AppConfig.ROUTE_REGISTRATION}" class="mt-3">Registro</a>
     </div>
 
     <script

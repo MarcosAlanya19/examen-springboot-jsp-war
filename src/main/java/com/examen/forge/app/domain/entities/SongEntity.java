@@ -24,6 +24,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class SongEntity extends BaseEntity {
+  @NotNull(message = "El titulo no puede estar vacio")
+  @NotBlank(message = "El titulo no puede estar vacio")
   @Column(unique = true)
   private String title;
 

@@ -17,11 +17,11 @@
   </head>
   <body>
     <div class="container mt-5">
-      <h1 class="mb-4">Register!</h1>
+      <h1 class="mb-4">Registro!</h1>
 
-      <form:form method="POST" action="${AppConfig.POST_CREATE_USER}" modelAttribute="${AppConfig.MA_USER}" class="needs-validation">
+      <form:form method="POST" action="${pageContext.request.contextPath}/${AppConfig.POST_CREATE_USER}" modelAttribute="${AppConfig.MA_USER}" class="needs-validation">
         <div class="mb-4">
-          <form:label path="name" class="form-label">Name:</form:label>
+          <form:label path="name" class="form-label">Nombre:</form:label>
           <form:input type="text" path="name" class="form-control" />
           <form:errors path="name" cssClass="text-danger" />
         </div>
@@ -36,13 +36,13 @@
         </div>
 
         <div class="mb-4">
-          <form:label path="password">Password:</form:label>
+          <form:label path="password">Contraseña:</form:label>
           <form:password path="password" class="form-control" />
           <form:errors path="password" cssClass="text-danger" />
         </div>
 
         <div class="mb-4">
-          <form:label path="confirm">Password Confirmation:</form:label>
+          <form:label path="confirm">Confirmar contraseña:</form:label>
           <form:password path="confirm" class="form-control" />
           <form:errors path="confirm" cssClass="text-danger" />
         </div>

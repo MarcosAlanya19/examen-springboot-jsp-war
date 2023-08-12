@@ -4,11 +4,10 @@
 <%@ page import="com.examen.forge.config.AppConfig" %>
 
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Add New Song</title>
+    <title>Examen - Nueva cancion</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -18,11 +17,10 @@
   </head>
   <body>
     <div class="container mt-5">
-      <h1>Add New Song!</h1>
+      <h1>Agregar cancion!</h1>
       <form:form method="POST" action="${pageContext.request.contextPath}/${AppConfig.POST_CREATE_SONG}" modelAttribute="${AppConfig.MA_SONG}" class="needs-validation">
-        <form:errors cssClass="global-error" />
         <div class="mb-3">
-          <form:label path="title">Title:</form:label>
+          <form:label path="title">Titulo:</form:label>
           <form:input type="text" path="title" class="form-control" />
           <form:errors path="title" cssClass="error" />
           <c:if test="${not empty errorMessage}">
@@ -31,7 +29,7 @@
         </div>
 
         <div class="mb-3">
-          <form:label path="genre">Genre:</form:label>
+          <form:label path="genre">Genero:</form:label>
           <form:select path="genre" class="form-select">
             <form:option value="Rock">Rock</form:option>
             <form:option value="Cumbia">Cumbia</form:option>
@@ -42,14 +40,16 @@
         </div>
 
         <div class="mb-3">
-          <form:label path="lyrics">Add Lyrics:</form:label>
+          <form:label path="lyrics">Agregar letra:</form:label>
           <form:input type="text" path="lyrics" class="form-control" />
           <form:errors path="lyrics" cssClass="error" />
         </div>
 
-        <button type="submit" class="btn btn-primary">Submit!</button>
+        <form:errors cssClass="global-error" />
+
+        <input type="submit" value="Agregar!" class="btn btn-primary" />
       </form:form>
-      <a href="/${AppConfig.ROUTE_HOME}" class="btn btn-secondary">Cancel</a>
+      <a href="/${AppConfig.ROUTE_HOME}" class="btn btn-secondary">Cancelar</a>
     </div>
 
     <script

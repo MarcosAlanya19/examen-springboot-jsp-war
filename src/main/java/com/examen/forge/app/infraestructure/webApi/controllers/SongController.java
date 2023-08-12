@@ -34,12 +34,12 @@ public class SongController {
 
   // Registro de una cancion
   @GetMapping({ AppConfig.ROUTE_ADD_SONG })
-  public String pageAddCandidate(@ModelAttribute(AppConfig.MA_SONG) SongEntity song) {
+  public String pageAddSong(@ModelAttribute(AppConfig.MA_SONG) SongEntity song) {
     return AppConfig.JSP_ADD_SONG;
   }
 
   @PostMapping({ AppConfig.POST_CREATE_SONG })
-  public String newCandidate(@Valid @ModelAttribute SongEntity song, BindingResult result,
+  public String newCandidate(@Valid @ModelAttribute(AppConfig.MA_SONG) SongEntity song, BindingResult result,
       HttpSession session, Model model) {
 
     try {
