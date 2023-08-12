@@ -13,7 +13,6 @@ public class AppConfig {
   public static final String ROUTE_EDIT_SONG = "edit/song";
   public static final String ROUTE_DETAIL_SONG = "detail/song";
 
-
   /* ------------------------------ Archivos JSP ----------------------------- */
   public static final String JSP_LOGIN = "index.jsp";
   public static final String JSP_HOME = "home-page.jsp";
@@ -31,6 +30,8 @@ public class AppConfig {
   /* SONG */
   public static final String POST_EDIT_SONG = "song/update";
   public static final String POST_CREATE_SONG = "song/create";
+  public static final String POST_DELETE_SONG = "song/delete";
+
 
   /* ------------------------ ModelAttributes creados ------------------------ */
   public static final String MA_USER = "user";

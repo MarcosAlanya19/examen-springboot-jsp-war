@@ -97,4 +97,11 @@ public class SongController {
 
     return "redirect:/" + AppConfig.ROUTE_DETAIL_SONG + "/" + id;
   }
+
+  // Eliminar song
+  @PostMapping({ AppConfig.POST_DELETE_SONG + "/{id}" })
+  public String deleteCandidate(@PathVariable Long id) {
+    songService.deleteById(id);
+    return "redirect:/" + AppConfig.ROUTE_HOME;
+  }
 }

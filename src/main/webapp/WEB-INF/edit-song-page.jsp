@@ -37,5 +37,21 @@ contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %> <%@ page import="c
 
       <button type="submit">Update Candidate</button>
     </form:form>
+
+    <button type="button" onclick="deleteSong()">Delete Candidate</button>
+
+    <form id="deleteForm" method="POST" action="${pageContext.request.contextPath}/${AppConfig.POST_DELETE_SONG}/${song.id}">
+      <input type="hidden" name="_method" value="DELETE" />
+    </form>
+
+    <a href="${pageContext.request.contextPath}/${AppConfig.ROUTE_DETAIL_SONG}/${song.id}">Cancel</a>
   </body>
+  <script>
+    function deleteSong() {
+      var result = confirm('Are you sure you want to delete this candidate?');
+      if (result) {
+        document.getElementById('deleteForm').submit();
+      }
+    }
+  </script>
 </html>
