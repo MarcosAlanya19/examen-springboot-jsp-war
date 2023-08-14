@@ -96,6 +96,8 @@ mvn spring-boot:run
 ```
 "Recordar estar en la carpeta de delpoyment, con el archivo war y key"
 - "scp -i {clave pem}.pem {nombre de archivo war}.war ubuntu@{numero de IP}:~/"
+- Ingresar a ubuntu y crear las siguientes carpetas "sudo mkdir /var/springApp"
+- Mover el archivo "sudo mv {nombre de archivo}.war /var/springApp"
 ```
 
 ### 9.- Configuracion en ubunto de aws
