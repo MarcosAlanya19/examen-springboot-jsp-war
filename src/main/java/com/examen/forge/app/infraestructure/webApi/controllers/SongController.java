@@ -41,7 +41,6 @@ public class SongController {
   @PostMapping({ AppConfig.POST_CREATE_SONG })
   public String newCandidate(@Valid @ModelAttribute(AppConfig.MA_SONG) SongEntity song, BindingResult result,
       HttpSession session, Model model) {
-
     try {
       if (result.hasErrors()) {
         model.addAttribute("globalErrors", result.getGlobalErrors());
@@ -122,5 +121,9 @@ public class SongController {
     return "redirect:/" + AppConfig.ROUTE_DETAIL_SONG + "/" + id;
   }
 
-
+  @PostMapping({ AppConfig.POST_DELETE_SONG + "/{id}" })
+  public String deleteSong(@PathVariable Long id) {
+    songService.deleteById(id);
+    return "redirect:/" + AppConfig.ROUTE_HOME;
+  }
 }

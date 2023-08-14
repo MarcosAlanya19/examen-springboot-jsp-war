@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.examen.forge.app.infraestructure.shared.BaseEntity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -42,6 +43,6 @@ public class SongEntity extends BaseEntity {
   @JoinColumn(name = "creator_user_id")
   private UserEntity creatorUser;
 
-  @OneToMany(mappedBy = "song")
+  @OneToMany(mappedBy = "song", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<ContributionEntity> contributions = new ArrayList<>();
 }
