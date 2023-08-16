@@ -65,6 +65,9 @@ public class SongController {
       @PathVariable Long id, Model model, HttpSession session) {
     SongEntity song = songService.getById(id);
     model.addAttribute("song", song);
+    Long userId = (Long) session.getAttribute(AppConfig.SESSION_USER);
+    boolean isRegistration = userId != null;
+    model.addAttribute("isRegistration", isRegistration);
 
     if (song != null) {
       UserEntity creator = song.getCreator();
@@ -73,7 +76,6 @@ public class SongController {
       Set<UserEntity> users = song.getUsers();
       model.addAttribute("users", users);
 
-      Long userId = (Long) session.getAttribute(AppConfig.SESSION_USER);
       if (userId != null) {
         model.addAttribute("userIdInSession", userId);
       }
@@ -90,17 +92,21 @@ public class SongController {
     model.addAttribute(AppConfig.MA_SONG, song);
     Long userId = (Long) session.getAttribute(AppConfig.SESSION_USER);
 
-    if (song != null) {
-      UserEntity user = song.getCreator();
-      model.addAttribute(AppConfig.MA_USER, user);
+    if (userId != null) {
+      if (song != null) {
+        UserEntity user = song.getCreator();
+        model.addAttribute(AppConfig.MA_USER, user);
 
-      boolean isCreator = userId != null && userId == song.getCreator().getId();
-      model.addAttribute("isCreator", isCreator);
+        boolean isCreator = userId != null && userId == song.getCreator().getId();
+        model.addAttribute("isCreator", isCreator);
 
-      if (!isCreator) {
-        model.addAttribute("lyrics", song.getLyrics());
-        song.setLyrics("");
+        if (!isCreator) {
+          model.addAttribute("lyrics", song.getLyrics());
+          song.setLyrics("");
+        }
       }
+    } else {
+      return "redirect:/";
     }
 
     return AppConfig.JSP_EDIT_SONG;
@@ -136,15 +142,20 @@ public class SongController {
   public String songDelete(
       @PathVariable Long id, HttpSession session) {
     SongEntity song = songService.getById(id);
-
     Long userId = (Long) session.getAttribute(AppConfig.SESSION_USER);
-    boolean isCreator = userId != null && userId == song.getCreator().getId();
 
-    if (isCreator) {
-      songService.deleteById(id);
-      return "redirect:/" + AppConfig.ROUTE_HOME;
+    if (userId != null) {
+      boolean isCreator = userId != null && userId == song.getCreator().getId();
+
+      if (isCreator) {
+        songService.deleteById(id);
+        return "redirect:/" + AppConfig.ROUTE_HOME;
+      }
+
+      return "redirect:/" + AppConfig.ROUTE_INDEX_SONG + "/" + id + "/edit";
+
+    } else {
+      return "redirect:/";
     }
-
-    return "redirect:/" + AppConfig.ROUTE_INDEX_SONG + "/" + id + "/edit";
   }
 }

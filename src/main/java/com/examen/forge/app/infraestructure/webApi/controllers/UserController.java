@@ -90,6 +90,7 @@ public class UserController {
     Long userId = (Long) session.getAttribute(AppConfig.SESSION_USER);
     List<SongEntity> songs = songService.getAll();
     model.addAttribute("songs", songs);
+
     boolean isRegistration = userId != null;
     model.addAttribute("isRegistration", isRegistration);
 

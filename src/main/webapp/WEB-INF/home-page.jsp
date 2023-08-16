@@ -46,14 +46,9 @@ import="com.examen.forge.config.AppConfig" %>
             <c:forEach items="${songs}" var="song">
               <tr>
                 <td>
-                  <c:if test="${!isRegistration}">
+                  <a href="/${AppConfig.ROUTE_INDEX_SONG}/${song.id}/detail">
                     <c:out value="${song.title.toUpperCase()}" />
-                  </c:if>
-                  <c:if test="${isRegistration}">
-                    <a href="/${AppConfig.ROUTE_INDEX_SONG}/${song.id}/detail">
-                      <c:out value="${song.title.toUpperCase()}" />
-                    </a>
-                  </c:if>
+                  </a>
                 </td>
                 <td><c:out value="${song.genre}" /></td>
                 <td><c:out value="${song.count}" /></td>
