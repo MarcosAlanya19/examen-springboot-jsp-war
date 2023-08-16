@@ -124,16 +124,27 @@ public class SongController {
         song.setLyrics(song.getLyrics() + " " + updatedSong.getLyrics());
       }
 
-      song.getUsers().add(user);
+      songService.createConnectUser(id, userId);
       songService.create(song);
     }
 
     return "redirect:/" + AppConfig.ROUTE_INDEX_SONG + "/" + id + "/detail";
   }
 
+  // Eliminar cancion
   @PostMapping({ AppConfig.POST_INDEX_SONG + "/{id}/delete" })
-  public String songDelete(@PathVariable Long id) {
-    songService.deleteById(id);
-    return "redirect:/" + AppConfig.ROUTE_HOME;
+  public String songDelete(
+      @PathVariable Long id, HttpSession session) {
+    SongEntity song = songService.getById(id);
+
+    Long userId = (Long) session.getAttribute(AppConfig.SESSION_USER);
+    boolean isCreator = userId != null && userId == song.getCreator().getId();
+
+    if (isCreator) {
+      songService.deleteById(id);
+      return "redirect:/" + AppConfig.ROUTE_HOME;
+    }
+
+    return "redirect:/" + AppConfig.ROUTE_INDEX_SONG + "/" + id + "/edit";
   }
 }

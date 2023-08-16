@@ -55,6 +55,7 @@ public class UserController {
   // Logueo de usuario
   @GetMapping
   public String pageLogin() {
+
     return AppConfig.JSP_LOGIN;
   }
 
@@ -62,6 +63,16 @@ public class UserController {
   public String loginUser(@ModelAttribute UserEntity user, Model model, HttpSession session) {
     String email = user.getEmail();
     String password = user.getPassword();
+
+    if (email.trim().isEmpty()) {
+      model.addAttribute("errorEmail", "El correo no puede estar vacia.");
+      return AppConfig.JSP_LOGIN;
+    }
+
+    if (password.trim().isEmpty()) {
+      model.addAttribute("errorPassword", "La contraseña no puede estar vacia.");
+      return AppConfig.JSP_LOGIN;
+    }
 
     if (userService.authenticateUser(email, password)) {
       UserEntity userByEmail = userService.getByEmail(email);
@@ -79,13 +90,15 @@ public class UserController {
     Long userId = (Long) session.getAttribute(AppConfig.SESSION_USER);
     List<SongEntity> songs = songService.getAll();
     model.addAttribute("songs", songs);
+    boolean isRegistration = userId != null;
+    model.addAttribute("isRegistration", isRegistration);
+
     if (userId != null) {
       UserEntity user = userService.getById(userId);
       model.addAttribute(AppConfig.MA_USER, user);
-      return AppConfig.JSP_HOME;
-    } else {
-      return "redirect:/";
     }
+
+    return AppConfig.JSP_HOME;
   }
 
   // Eliminacion de session

@@ -71,7 +71,7 @@ uri="http://www.springframework.org/tags/form" %> <%@ page import="com.examen.fo
 
             <button type="submit" class="btn btn-primary w-100">Registrar</button>
           </form:form>
-          <p class="mt-3">¿Ya tienes cuenta? <a href="/${AppConfig.ROUTE_HOME}">Ingresa</a></p>
+          <p class="mt-3">¿Ya tienes cuenta? <a href="/">Ingresa</a></p>
         </div>
       </div>
     </div>

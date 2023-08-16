@@ -40,15 +40,26 @@ import="com.examen.forge.config.AppConfig" %>
           >
             <div class="mb-3 w-100">
               <label for="email" class="form-label">Email</label>
-              <input type="text" id="email" name="email" class="form-control mb-1 py-3 w-100" required />
+              <input type="text" id="email" name="email" class="form-control mb-1 py-3 w-100" />
+              <c:if test="${not empty errorEmail}">
+                <p class="text-danger">${errorEmail}</p>
+              </c:if>
             </div>
             <div class="mb-3 w-100">
               <label for="password" class="form-label">Contraseña</label>
-              <input type="password" id="password" name="password" class="form-control mb-1 py-3" required />
+              <input type="password" id="password" name="password" class="form-control mb-1 py-3" />
+              <c:if test="${not empty errorPassword}">
+                <p class="text-danger">${errorPassword}</p>
+              </c:if>
             </div>
+            <c:if test="${not empty error}">
+              <p class="text-danger">${error}</p>
+            </c:if>
             <button type="submit" class="btn btn-primary w-100">Acceso</button>
+
           </form>
           <p class="mt-3">¿No tienes cuenta? <a href="/${AppConfig.ROUTE_REGISTRATION}" class="mt-3">Registro</a></p>
+          <p class="mt-3">Registros de <a href="/${AppConfig.ROUTE_HOME}" class="mt-3">canciones</a></p>
         </div>
       </div>
     </div>
