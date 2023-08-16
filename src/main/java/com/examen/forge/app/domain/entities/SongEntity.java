@@ -37,6 +37,7 @@ public class SongEntity extends BaseEntity {
   @NotNull(message = "La letra no puede estar vacia")
   @NotBlank(message = "La letra no puede estar vacia")
   @Size(min = 5, message = "La letra debe tener como minimo 5 caracteres")
+  @Column(columnDefinition = "TEXT")
   private String lyrics;
 
   @ManyToOne

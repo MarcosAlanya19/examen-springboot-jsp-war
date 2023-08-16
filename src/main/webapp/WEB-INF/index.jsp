@@ -33,7 +33,11 @@ import="com.examen.forge.config.AppConfig" %>
       <div class="row w-100 justify-content-center align-items-center" style="height: 100vh">
         <div class="col-lg-4 centered-container">
           <h1 class="text-center mb-5">Ingreso</h1>
-          <form method="POST" action="${pageContext.request.contextPath}/${AppConfig.POST_LOGIN_USER}" class="needs-validation">
+          <form
+            method="POST"
+            action="${pageContext.request.contextPath}/${AppConfig.POST_LOGIN_USER}"
+            class="needs-validation"
+          >
             <div class="mb-3 w-100">
               <label for="email" class="form-label">Email</label>
               <input type="text" id="email" name="email" class="form-control mb-1 py-3 w-100" required />

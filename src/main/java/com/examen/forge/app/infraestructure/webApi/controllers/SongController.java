@@ -39,7 +39,8 @@ public class SongController {
   }
 
   @PostMapping({ AppConfig.POST_CREATE_SONG })
-  public String newCandidate(@Valid @ModelAttribute(AppConfig.MA_SONG) SongEntity song, BindingResult result,
+  public String newCandidate(
+      @Valid @ModelAttribute(AppConfig.MA_SONG) SongEntity song, BindingResult result,
       HttpSession session, Model model) {
     try {
       if (result.hasErrors()) {
@@ -61,7 +62,8 @@ public class SongController {
 
   // Detalle de cancion por id
   @GetMapping({ AppConfig.ROUTE_DETAIL_SONG + "/{id}" })
-  public String candidateDetail(@PathVariable Long id, Model model, HttpSession session) {
+  public String candidateDetail(
+      @PathVariable Long id, Model model, HttpSession session) {
     SongEntity song = songService.getById(id);
     model.addAttribute("song", song);
 
@@ -80,7 +82,8 @@ public class SongController {
 
   // Contribuir Cancion
   @GetMapping({ AppConfig.ROUTE_EDIT_SONG + "/{id}" })
-  public String editCandidate(@PathVariable Long id, Model model, HttpSession session) {
+  public String editCandidate(
+      @PathVariable Long id, Model model, HttpSession session) {
     SongEntity song = songService.getById(id);
     model.addAttribute(AppConfig.MA_SONG, song);
 
@@ -98,7 +101,8 @@ public class SongController {
   }
 
   @PostMapping({ AppConfig.POST_EDIT_SONG + "/{id}" })
-  public String updateSong(@PathVariable Long id, @ModelAttribute SongEntity song, HttpSession session) {
+  public String updateSong(
+      @PathVariable Long id, @ModelAttribute SongEntity song, HttpSession session) {
     SongEntity existingSong = songService.getById(id);
 
     if (existingSong != null) {

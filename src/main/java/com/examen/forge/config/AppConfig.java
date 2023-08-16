@@ -9,6 +9,7 @@ public class AppConfig {
   public static final String ROUTE_LOGOUT_USER = "logout";
   public static final String ROUTE_REGISTRATION = "registration";
 
+  public static final String ROUTE_SONG = "song";
   public static final String ROUTE_ADD_SONG = "new/song";
   public static final String ROUTE_EDIT_SONG = "edit/song";
   public static final String ROUTE_DETAIL_SONG = "detail/song";

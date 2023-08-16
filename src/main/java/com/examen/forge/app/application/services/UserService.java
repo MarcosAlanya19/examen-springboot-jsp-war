@@ -8,13 +8,15 @@ import org.springframework.stereotype.Service;
 
 import com.examen.forge.app.domain.entities.UserEntity;
 import com.examen.forge.app.domain.repositories.UserRepository;
+import com.examen.forge.app.infraestructure.shared.BaseService;
 
 @Service
-public class UserService {
+public class UserService extends BaseService<UserEntity> {
   @Autowired
   UserRepository userRepository;
 
   // Guardar usuario con contraseña hasheada
+  @Override
   public UserEntity create(UserEntity user) {
     String hashed = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
     user.setPassword(hashed);
@@ -24,17 +26,6 @@ public class UserService {
   // Buscar usuario mendiante email
   public UserEntity findByEmail(String email) {
     return userRepository.findByEmail(email);
-  }
-
-  // Encontrar usuario mediante id
-  public UserEntity getById(Long id) {
-    Optional<UserEntity> u = userRepository.findById(id);
-
-    if (u.isPresent()) {
-      return u.get();
-    } else {
-      return null;
-    }
   }
 
   // Autentificacion de usuario
