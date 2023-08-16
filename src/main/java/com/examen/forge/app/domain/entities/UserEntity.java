@@ -1,12 +1,17 @@
 package com.examen.forge.app.domain.entities;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.examen.forge.app.infraestructure.shared.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import jakarta.validation.constraints.Email;
@@ -42,9 +47,8 @@ public class UserEntity extends BaseEntity {
   @Size(min = 5, message = "La confirmación de contraseña debe tener más de 5 caracteres")
   private String confirm;
 
-  @OneToMany(mappedBy = "creatorUser")
-  private List<SongEntity> createdSongs;
-
-  @OneToMany(mappedBy = "contributingUser")
-  private List<ContributionEntity> contributions;
+  @ManyToMany(fetch = FetchType.LAZY)
+  @JsonIgnore
+  @JoinTable(name = "user_song", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "song_id"))
+  private Set<SongEntity> songs = new HashSet<>();
 }

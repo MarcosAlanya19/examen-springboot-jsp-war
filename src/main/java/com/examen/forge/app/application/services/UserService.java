@@ -22,7 +22,7 @@ public class UserService extends BaseService<UserEntity> {
   }
 
   // Buscar usuario mendiante email
-  public UserEntity findByEmail(String email) {
+  public UserEntity getByEmail(String email) {
     return userRepository.findByEmail(email);
   }
 

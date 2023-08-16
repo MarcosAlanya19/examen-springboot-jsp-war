@@ -64,7 +64,7 @@ public class UserController {
     String password = user.getPassword();
 
     if (userService.authenticateUser(email, password)) {
-      UserEntity userByEmail = userService.findByEmail(email);
+      UserEntity userByEmail = userService.getByEmail(email);
       session.setAttribute(AppConfig.SESSION_USER, userByEmail.getId());
       return "redirect:/" + AppConfig.ROUTE_HOME;
     } else {

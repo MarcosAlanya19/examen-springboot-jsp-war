@@ -10,10 +10,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.examen.forge.app.application.services.ContributionService;
 import com.examen.forge.app.application.services.SongService;
 import com.examen.forge.app.application.services.UserService;
-import com.examen.forge.app.domain.entities.ContributionEntity;
 import com.examen.forge.app.domain.entities.SongEntity;
 import com.examen.forge.app.domain.entities.UserEntity;
 import com.examen.forge.config.AppConfig;
@@ -29,9 +27,6 @@ public class SongController {
   @Autowired
   UserService userService;
 
-  @Autowired
-  ContributionService contributionService;
-
   // Registro de una cancion
   @GetMapping({ AppConfig.ROUTE_ADD_SONG })
   public String pageAddSong(@ModelAttribute(AppConfig.MA_SONG) SongEntity song) {
@@ -42,22 +37,25 @@ public class SongController {
   public String newCandidate(
       @Valid @ModelAttribute(AppConfig.MA_SONG) SongEntity song, BindingResult result,
       HttpSession session, Model model) {
-    try {
-      if (result.hasErrors()) {
-        model.addAttribute("globalErrors", result.getGlobalErrors());
-        return AppConfig.JSP_ADD_SONG;
-      }
-      Long userId = (Long) session.getAttribute(AppConfig.SESSION_USER);
-      UserEntity user = userService.getById(userId);
-      if (user != null) {
-        song.setCreatorUser(user);
-        songService.create(song);
-      }
-      return "redirect:/" + AppConfig.ROUTE_HOME;
-    } catch (DataIntegrityViolationException ex) {
+
+    if (result.hasErrors()) {
+      model.addAttribute("globalErrors", result.getGlobalErrors());
+      return AppConfig.JSP_ADD_SONG;
+    }
+
+    if (songService.getByTitle(song.getTitle()) != null) {
       model.addAttribute("errorMessage", "El nombre ya está en uso.");
       return AppConfig.JSP_ADD_SONG;
     }
+
+    Long userId = (Long) session.getAttribute(AppConfig.SESSION_USER);
+    UserEntity user = userService.getById(userId);
+
+    if (user != null) {
+      song.setCreator(user);
+      songService.create(song);
+    }
+    return "redirect:/" + AppConfig.ROUTE_HOME;
   }
 
   // Detalle de cancion por id
@@ -68,7 +66,7 @@ public class SongController {
     model.addAttribute("song", song);
 
     if (song != null) {
-      UserEntity user = song.getCreatorUser();
+      UserEntity user = song.getCreator();
       model.addAttribute("user", user);
 
       Long userId = (Long) session.getAttribute(AppConfig.SESSION_USER);
@@ -88,7 +86,7 @@ public class SongController {
     model.addAttribute(AppConfig.MA_SONG, song);
 
     if (song != null) {
-      UserEntity user = song.getCreatorUser();
+      UserEntity user = song.getCreator();
       model.addAttribute(AppConfig.MA_USER, user);
 
       Long userId = (Long) session.getAttribute(AppConfig.SESSION_USER);
@@ -102,24 +100,20 @@ public class SongController {
 
   @PostMapping({ AppConfig.POST_INDEX_SONG + "/{id}/edit" })
   public String updateSong(
-      @PathVariable Long id, @ModelAttribute SongEntity song, HttpSession session) {
-    SongEntity existingSong = songService.getById(id);
+      @PathVariable Long id, @ModelAttribute SongEntity updatedSong, HttpSession session) {
+    SongEntity song = songService.getById(id);
+    Long userId = (Long) session.getAttribute(AppConfig.SESSION_USER);
+    UserEntity user = userService.getById(userId);
 
-    if (existingSong != null) {
-      existingSong.setTitle(song.getTitle());
-      existingSong.setGenre(song.getGenre());
-      existingSong.setLyrics(song.getLyrics());
+    if (song != null) {
+      song.setTitle(updatedSong.getTitle());
+      song.setGenre(updatedSong.getGenre());
+      song.setLyrics(updatedSong.getLyrics());
 
-      songService.create(existingSong);
+      song.getUsers().add(user);
 
-      Long userId = (Long) session.getAttribute(AppConfig.SESSION_USER);
-      UserEntity currentUser = userService.getById(userId);
-
-      ContributionEntity contribution = new ContributionEntity();
-      contribution.setContributingUser(currentUser);
-      contribution.setSong(existingSong);
-
-      contributionService.create(contribution);
+      song.setCount(updatedSong.getCount() + 1);
+      songService.create(song);
     }
 
     return "redirect:/" + AppConfig.ROUTE_INDEX_SONG + "/" + id + "/detail";

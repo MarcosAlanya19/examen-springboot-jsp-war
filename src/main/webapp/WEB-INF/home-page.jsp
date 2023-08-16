@@ -49,7 +49,7 @@ import="com.examen.forge.config.AppConfig" %>
                   </a>
                 </td>
                 <td><c:out value="${song.genre}" /></td>
-                <td><c:out value="${song.contributions.size()}" /></td>
+                <td><c:out value="${song.count}" /></td>
               </tr>
             </c:forEach>
           </tbody>
