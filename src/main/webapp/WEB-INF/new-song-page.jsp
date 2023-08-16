@@ -18,7 +18,12 @@
   <body>
     <div class="container mt-5">
       <h1>Agregar cancion!</h1>
-      <form:form method="POST" action="${pageContext.request.contextPath}/${AppConfig.POST_CREATE_SONG}" modelAttribute="${AppConfig.MA_SONG}" class="needs-validation">
+      <form:form
+        method="POST"
+        action="${pageContext.request.contextPath}/${AppConfig.POST_CREATE_SONG}"
+        modelAttribute="${AppConfig.MA_SONG}"
+        class="needs-validation"
+      >
         <div class="mb-3">
           <form:label path="title">Titulo:</form:label>
           <form:input type="text" path="title" class="form-control" />

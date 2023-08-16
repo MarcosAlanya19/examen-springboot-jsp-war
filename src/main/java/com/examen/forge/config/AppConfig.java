@@ -5,14 +5,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class AppConfig {
   /* ----------------------------- Rutas creadas ----------------------------- */
+  public static final String ROUTE_INDEX_SONG = "song";
   public static final String ROUTE_HOME = "home";
   public static final String ROUTE_LOGOUT_USER = "logout";
   public static final String ROUTE_REGISTRATION = "registration";
-
-  public static final String ROUTE_SONG = "song";
-  public static final String ROUTE_ADD_SONG = "new/song";
-  public static final String ROUTE_EDIT_SONG = "edit/song";
-  public static final String ROUTE_DETAIL_SONG = "detail/song";
+  public static final String ROUTE_ADD_SONG = "song/new";
 
   /* ------------------------------ Archivos JSP ----------------------------- */
   public static final String JSP_LOGIN = "index.jsp";
@@ -29,10 +26,8 @@ public class AppConfig {
   public static final String POST_CREATE_USER = "user/create";
 
   /* SONG */
-  public static final String POST_EDIT_SONG = "song/update";
+  public static final String POST_INDEX_SONG = "song";
   public static final String POST_CREATE_SONG = "song/create";
-  public static final String POST_DELETE_SONG = "song/delete";
-
 
   /* ------------------------ ModelAttributes creados ------------------------ */
   public static final String MA_USER = "user";

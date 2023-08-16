@@ -29,7 +29,7 @@
 
         <div class="mt-4 d-flex justify-content-between">
           <a href="/${AppConfig.ROUTE_HOME}" class="btn btn-outline-primary">Regresar a inicio</a>
-          <a href="/${AppConfig.ROUTE_EDIT_SONG}/${song.id}" class="btn btn-primary">Contribuir</a>
+          <a href="/${AppConfig.ROUTE_INDEX_SONG}/${song.id}/detail" class="btn btn-primary">Contribuir</a>
         </div>
       </div>
     </div>

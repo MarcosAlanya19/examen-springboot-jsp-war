@@ -61,7 +61,7 @@ public class SongController {
   }
 
   // Detalle de cancion por id
-  @GetMapping({ AppConfig.ROUTE_DETAIL_SONG + "/{id}" })
+  @GetMapping({ AppConfig.ROUTE_INDEX_SONG + "/{id}/detail" })
   public String candidateDetail(
       @PathVariable Long id, Model model, HttpSession session) {
     SongEntity song = songService.getById(id);
@@ -81,7 +81,7 @@ public class SongController {
   }
 
   // Contribuir Cancion
-  @GetMapping({ AppConfig.ROUTE_EDIT_SONG + "/{id}" })
+  @GetMapping({ AppConfig.ROUTE_INDEX_SONG + "/{id}/edit" })
   public String editCandidate(
       @PathVariable Long id, Model model, HttpSession session) {
     SongEntity song = songService.getById(id);
@@ -100,7 +100,7 @@ public class SongController {
     return AppConfig.JSP_EDIT_SONG;
   }
 
-  @PostMapping({ AppConfig.POST_EDIT_SONG + "/{id}" })
+  @PostMapping({ AppConfig.POST_INDEX_SONG + "/{id}/edit" })
   public String updateSong(
       @PathVariable Long id, @ModelAttribute SongEntity song, HttpSession session) {
     SongEntity existingSong = songService.getById(id);
@@ -122,10 +122,10 @@ public class SongController {
       contributionService.create(contribution);
     }
 
-    return "redirect:/" + AppConfig.ROUTE_DETAIL_SONG + "/" + id;
+    return "redirect:/" + AppConfig.ROUTE_INDEX_SONG + "/" + id + "/detail";
   }
 
-  @PostMapping({ AppConfig.POST_DELETE_SONG + "/{id}" })
+  @PostMapping({ AppConfig.POST_INDEX_SONG + "/{id}/delete" })
   public String deleteSong(@PathVariable Long id) {
     songService.deleteById(id);
     return "redirect:/" + AppConfig.ROUTE_HOME;

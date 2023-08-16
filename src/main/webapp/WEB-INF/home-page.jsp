@@ -44,7 +44,7 @@ import="com.examen.forge.config.AppConfig" %>
             <c:forEach items="${songs}" var="song">
               <tr>
                 <td>
-                  <a href="/${AppConfig.ROUTE_DETAIL_SONG}/${song.id}">
+                  <a href="/${AppConfig.ROUTE_INDEX_SONG}/${song.id}/detail">
                     <c:out value="${song.title.toUpperCase()}" />
                   </a>
                 </td>

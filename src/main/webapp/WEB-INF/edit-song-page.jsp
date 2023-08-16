@@ -16,7 +16,12 @@ contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
   <div class="container mt-5">
     <h1 class="display-4">Contribución</h1>
 
-    <form:form method="POST" action="${pageContext.request.contextPath}/${AppConfig.POST_EDIT_SONG}/${song.id}" modelAttribute="${AppConfig.MA_SONG}" class="mt-4">
+    <form:form
+      method="POST"
+      action="${pageContext.request.contextPath}/${AppConfig.POST_INDEX_SONG}/${song.id}/edit"
+      modelAttribute="${AppConfig.MA_SONG}"
+      class="mt-4"
+    >
       <c:if test="${userIdInSession != null && userIdInSession == user.id}">
         <div class="mb-3">
           <form:label path="title">Título:</form:label>
@@ -60,11 +65,20 @@ contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
       <button type="button" onclick="deleteSong()" class="btn btn-danger mt-3">Eliminar canción</button>
     </c:if>
 
-    <form id="deleteForm" method="POST" action="${pageContext.request.contextPath}/${AppConfig.POST_DELETE_SONG}/${song.id}">
+    <form
+      id="deleteForm"
+      method="POST"
+      action="${pageContext.request.contextPath}/${AppConfig.POST_INDEX_SONG}/${song.id}/delete"
+    >
       <input type="hidden" name="_method" value="DELETE" />
     </form>
 
-    <a href="${pageContext.request.contextPath}/${AppConfig.ROUTE_DETAIL_SONG}/${song.id}" class="btn btn-secondary mt-3">Cancelar</a>
+    <a
+      href="${pageContext.request.contextPath}/${AppConfig.ROUTE_INDEX_SONG}/${song.id}/detail"
+      class="btn btn-secondary mt-3"
+    >
+      Cancelar
+    </a>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
