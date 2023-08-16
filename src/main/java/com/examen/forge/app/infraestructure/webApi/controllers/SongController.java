@@ -1,7 +1,8 @@
 package com.examen.forge.app.infraestructure.webApi.controllers;
 
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -34,7 +35,7 @@ public class SongController {
   }
 
   @PostMapping({ AppConfig.POST_CREATE_SONG })
-  public String newCandidate(
+  public String newSong(
       @Valid @ModelAttribute(AppConfig.MA_SONG) SongEntity song, BindingResult result,
       HttpSession session, Model model) {
 
@@ -60,14 +61,17 @@ public class SongController {
 
   // Detalle de cancion por id
   @GetMapping({ AppConfig.ROUTE_INDEX_SONG + "/{id}/detail" })
-  public String candidateDetail(
+  public String songDetail(
       @PathVariable Long id, Model model, HttpSession session) {
     SongEntity song = songService.getById(id);
     model.addAttribute("song", song);
 
     if (song != null) {
-      UserEntity user = song.getCreator();
-      model.addAttribute("user", user);
+      UserEntity creator = song.getCreator();
+      model.addAttribute("creator", creator);
+
+      Set<UserEntity> users = song.getUsers();
+      model.addAttribute("users", users);
 
       Long userId = (Long) session.getAttribute(AppConfig.SESSION_USER);
       if (userId != null) {
@@ -80,7 +84,7 @@ public class SongController {
 
   // Contribuir Cancion
   @GetMapping({ AppConfig.ROUTE_INDEX_SONG + "/{id}/edit" })
-  public String editCandidate(
+  public String songEdit(
       @PathVariable Long id, Model model, HttpSession session) {
     SongEntity song = songService.getById(id);
     model.addAttribute(AppConfig.MA_SONG, song);
@@ -99,20 +103,21 @@ public class SongController {
   }
 
   @PostMapping({ AppConfig.POST_INDEX_SONG + "/{id}/edit" })
-  public String updateSong(
+  public String songUpdate(
       @PathVariable Long id, @ModelAttribute SongEntity updatedSong, HttpSession session) {
     SongEntity song = songService.getById(id);
     Long userId = (Long) session.getAttribute(AppConfig.SESSION_USER);
     UserEntity user = userService.getById(userId);
 
     if (song != null) {
+      song.setCount(song.getCount() + 1);
+
       song.setTitle(updatedSong.getTitle());
       song.setGenre(updatedSong.getGenre());
       song.setLyrics(updatedSong.getLyrics());
 
       song.getUsers().add(user);
 
-      song.setCount(updatedSong.getCount() + 1);
       songService.create(song);
     }
 
@@ -120,7 +125,7 @@ public class SongController {
   }
 
   @PostMapping({ AppConfig.POST_INDEX_SONG + "/{id}/delete" })
-  public String deleteSong(@PathVariable Long id) {
+  public String songDelete(@PathVariable Long id) {
     songService.deleteById(id);
     return "redirect:/" + AppConfig.ROUTE_HOME;
   }

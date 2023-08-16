@@ -15,21 +15,21 @@
     <div class="card">
       <div class="card-body">
         <h1 class="card-title text-center mb-4"><strong><c:out value="${song.title.toUpperCase()}" /></strong></h1>
-        <h4 class="card-subtitle text-muted mb-3">Creado por <c:out value="${user.name}" /></h4>
+        <h4 class="card-subtitle text-muted mb-3">Creado por <c:out value="${creator.name}" /></h4>
         <p class="card-text"><strong>Género:</strong> <c:out value="${song.genre}" /></p>
         <p class="card-text"><strong>Letra:</strong></p>
         <pre class="card-text"><c:out value="${song.lyrics}" /></pre>
 
         <h3 class="mt-4">Contribuyentes:</h3>
         <ul class="list-group">
-          <c:forEach items="${song.contributions}" var="contribution">
-            <li class="list-group-item"><c:out value="${contribution.contributingUser.name}" /></li>
+          <c:forEach items="${users}" var="user">
+            <li class="list-group-item"><c:out value="${user.name}" /> - <c:out value="${user.songs.size()}" /> veces</li>
           </c:forEach>
         </ul>
 
         <div class="mt-4 d-flex justify-content-between">
           <a href="/${AppConfig.ROUTE_HOME}" class="btn btn-outline-primary">Regresar a inicio</a>
-          <a href="/${AppConfig.ROUTE_INDEX_SONG}/${song.id}/detail" class="btn btn-primary">Contribuir</a>
+          <a href="/${AppConfig.ROUTE_INDEX_SONG}/${song.id}/edit" class="btn btn-primary">Contribuir</a>
         </div>
       </div>
     </div>

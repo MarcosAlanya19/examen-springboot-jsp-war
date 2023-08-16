@@ -42,7 +42,7 @@ public class SongEntity extends BaseEntity {
   @Column(columnDefinition = "TEXT")
   private String lyrics;
 
-  private Integer count;
+  private Integer count = 0;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "creator_id")
@@ -52,5 +52,4 @@ public class SongEntity extends BaseEntity {
   @JsonIgnore
   @JoinTable(name = "user_song", joinColumns = @JoinColumn(name = "song_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
   private Set<UserEntity> users = new HashSet<>();
-
 }
