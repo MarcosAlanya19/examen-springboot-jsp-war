@@ -22,7 +22,7 @@ contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
       modelAttribute="${AppConfig.MA_SONG}"
       class="mt-4"
     >
-      <c:if test="${userIdInSession != null && userIdInSession == user.id}">
+      <c:if test="${isCreator}">
         <div class="mb-3">
           <form:label path="title">Título:</form:label>
           <form:input type="text" path="title" class="form-control" />
@@ -37,9 +37,14 @@ contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
             <form:option value="Reggaeton">Reggaeton</form:option>
           </form:select>
         </div>
+
+        <div class="mb-3">
+          <form:label path="lyrics">Modificar letra:</form:label>
+          <form:input type="text" path="lyrics" class="form-control" />
+        </div>
       </c:if>
 
-      <c:if test="${userIdInSession != user.id}">
+      <c:if test="${!isCreator}">
         <div class="mb-3">
           <form:label path="title">Título:</form:label>
           <form:input type="text" path="title" readonly="true" class="form-control" />
@@ -51,17 +56,20 @@ contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
             <form:option value="${song.genre}" selected="true">${song.genre}</form:option>
           </form:select>
         </div>
-      </c:if>
 
-      <div class="mb-3">
-        <form:label path="lyrics">Modificar letra:</form:label>
-        <form:input type="text" path="lyrics" class="form-control" />
+        <div class="mb-3">
+          <form:label path="lyrics">Agregar letra:</form:label>
+          <p>
+              <strong class="my-2 text-primary"><c:out value="${lyrics}" /></strong>
+          </p>
+          <form:input type="text" path="lyrics" class="form-control" />
       </div>
+      </c:if>
 
       <button type="submit" class="btn btn-primary">Actualizar cación</button>
     </form:form>
 
-    <c:if test="${userIdInSession != null && userIdInSession == user.id}">
+    <c:if test="${isCreator}">
       <button type="button" onclick="deleteSong()" class="btn btn-danger mt-3">Eliminar canción</button>
     </c:if>
 

@@ -88,14 +88,18 @@ public class SongController {
       @PathVariable Long id, Model model, HttpSession session) {
     SongEntity song = songService.getById(id);
     model.addAttribute(AppConfig.MA_SONG, song);
+    Long userId = (Long) session.getAttribute(AppConfig.SESSION_USER);
 
     if (song != null) {
       UserEntity user = song.getCreator();
       model.addAttribute(AppConfig.MA_USER, user);
 
-      Long userId = (Long) session.getAttribute(AppConfig.SESSION_USER);
-      if (userId != null) {
-        model.addAttribute("userIdInSession", userId);
+      boolean isCreator = userId != null && userId == song.getCreator().getId();
+      model.addAttribute("isCreator", isCreator);
+
+      if (!isCreator) {
+        model.addAttribute("lyrics", song.getLyrics());
+        song.setLyrics("");
       }
     }
 
@@ -111,13 +115,16 @@ public class SongController {
 
     if (song != null) {
       song.setCount(song.getCount() + 1);
-
       song.setTitle(updatedSong.getTitle());
       song.setGenre(updatedSong.getGenre());
-      song.setLyrics(updatedSong.getLyrics());
+
+      if (user != null && user.equals(song.getCreator())) {
+        song.setLyrics(updatedSong.getLyrics());
+      } else if (updatedSong.getLyrics() != null) {
+        song.setLyrics(song.getLyrics() + " " + updatedSong.getLyrics());
+      }
 
       song.getUsers().add(user);
-
       songService.create(song);
     }
 

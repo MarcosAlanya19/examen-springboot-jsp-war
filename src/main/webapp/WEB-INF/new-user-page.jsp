@@ -34,7 +34,12 @@ uri="http://www.springframework.org/tags/form" %> <%@ page import="com.examen.fo
         <div class="col-lg-4 centered-container">
           <h1 class="mb-4 text-center">Registro</h1>
 
-          <form:form method="POST" action="${pageContext.request.contextPath}/${AppConfig.POST_CREATE_USER}" modelAttribute="${AppConfig.MA_USER}" class="needs-validation">
+          <form:form
+            method="POST"
+            action="${pageContext.request.contextPath}/${AppConfig.POST_CREATE_USER}"
+            modelAttribute="${AppConfig.MA_USER}"
+            class="needs-validation"
+          >
             <div class="mb-3">
               <form:label path="name" class="form-label">Nombre:</form:label>
               <form:input type="text" path="name" class="form-control mb-1 py-3" />
