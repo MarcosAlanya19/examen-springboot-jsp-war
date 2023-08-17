@@ -114,7 +114,7 @@ Te aparecera la siguiente consola:
 ```
 - Apretar la letra " i "
 Agregar las 2 ultimas linea:
-ProxyPass / ajp:/localhost:9090/
+ProxyPass / ajp://localhost:9090/
 ProxyPassReverse / ajp://localhost:9090/
 - Darlea a la tecla ESC y escribir "!wq" - Enter para salir
 Reinicia Apache
