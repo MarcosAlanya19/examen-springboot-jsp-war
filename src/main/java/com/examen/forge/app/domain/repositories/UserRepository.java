@@ -5,4 +5,5 @@ import com.examen.forge.app.infraestructure.shared.BaseRepository;
 
 public interface UserRepository extends BaseRepository<UserEntity> {
   UserEntity findByEmail(String email);
+  boolean existsByEmail(String email);
 }

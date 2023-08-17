@@ -21,6 +21,11 @@ public class UserService extends BaseService<UserEntity> {
     return userRepository.save(user);
   }
 
+
+  public boolean existsByEmail(String email) {
+    return userRepository.existsByEmail(email);
+  }
+
   // Buscar usuario mendiante email
   public UserEntity getByEmail(String email) {
     return userRepository.findByEmail(email);

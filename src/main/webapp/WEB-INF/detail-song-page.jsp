@@ -20,10 +20,11 @@
         <p class="card-text"><strong>Letra:</strong></p>
         <pre class="card-text"><c:out value="${song.lyrics}" /></pre>
 
+
         <h3 class="mt-4">Contribuyentes:</h3>
         <ul class="list-group">
-          <c:forEach items="${users}" var="user">
-            <li class="list-group-item"><c:out value="${user.name}" /> - <c:out value="${user.songs.size()}" /> veces</li>
+          <c:forEach items="${song.users}" var="userSong">
+            <li class="list-group-item"><c:out value="${userSong.user.name}" /> - <c:out value="${userSong.count}" /></li>
           </c:forEach>
         </ul>
 

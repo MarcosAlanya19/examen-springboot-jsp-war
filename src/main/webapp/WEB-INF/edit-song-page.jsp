@@ -26,6 +26,7 @@ contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
         <div class="mb-3">
           <form:label path="title">Título:</form:label>
           <form:input type="text" path="title" class="form-control" />
+          <form:errors path="title" cssClass="error" />
         </div>
 
         <div class="mb-3">
@@ -36,11 +37,13 @@ contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
             <form:option value="Pop">Pop</form:option>
             <form:option value="Reggaeton">Reggaeton</form:option>
           </form:select>
+          <form:errors path="genre" cssClass="error" />
         </div>
 
         <div class="mb-3">
           <form:label path="lyrics">Modificar letra:</form:label>
           <form:input type="text" path="lyrics" class="form-control" />
+          <form:errors path="lyrics" cssClass="error" />
         </div>
       </c:if>
 
@@ -48,6 +51,7 @@ contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
         <div class="mb-3">
           <form:label path="title">Título:</form:label>
           <form:input type="text" path="title" readonly="true" class="form-control" />
+          <form:errors path="title" cssClass="error" />
         </div>
 
         <div class="mb-3">
@@ -55,6 +59,7 @@ contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
           <form:select path="genre" readonly="true" class="form-select">
             <form:option value="${song.genre}" selected="true">${song.genre}</form:option>
           </form:select>
+          <form:errors path="genre" cssClass="error" />
         </div>
 
         <div class="mb-3">
@@ -63,6 +68,7 @@ contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
               <strong class="my-2 text-primary"><c:out value="${lyrics}" /></strong>
           </p>
           <form:input type="text" path="lyrics" class="form-control" />
+          <form:errors path="lyrics" cssClass="error" />
       </div>
       </c:if>
 

@@ -3,7 +3,6 @@ package com.examen.forge.app.infraestructure.webApi.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -35,21 +34,28 @@ public class UserController {
   }
 
   @PostMapping({ AppConfig.POST_CREATE_USER })
-  public String newUser(@Valid @ModelAttribute(AppConfig.MA_USER) UserEntity user, BindingResult result,
+  public String newUser(
+      @Valid @ModelAttribute(AppConfig.MA_USER) UserEntity user, BindingResult result,
       HttpSession session, Model model) {
-    try {
-      if (result.hasErrors()) {
-        model.addAttribute("globalErrors", result.getGlobalErrors());
-        return AppConfig.JSP_REGISTRATION;
-      }
 
-      UserEntity newUser = userService.create(user);
-      session.setAttribute(AppConfig.SESSION_USER, newUser.getId());
-      return "redirect:/" + AppConfig.ROUTE_HOME;
-    } catch (DataIntegrityViolationException ex) {
-      model.addAttribute("errorMessage", "El correo electrónico ya está en uso.");
+    if (result.hasErrors()) {
+      model.addAttribute("globalErrors", result.getGlobalErrors());
       return AppConfig.JSP_REGISTRATION;
     }
+
+    if (userService.existsByEmail(user.getEmail())) {
+      model.addAttribute("emailError", "El email ya está en uso");
+      return AppConfig.JSP_REGISTRATION;
+    }
+
+    if (!user.getPassword().equals(user.getConfirm())) {
+      model.addAttribute("confirmError", "Las contraseñas no coinciden");
+      return AppConfig.JSP_REGISTRATION;
+    }
+
+    UserEntity newUser = userService.create(user);
+    session.setAttribute(AppConfig.SESSION_USER, newUser.getId());
+    return "redirect:/" + AppConfig.ROUTE_HOME;
   }
 
   // Logueo de usuario

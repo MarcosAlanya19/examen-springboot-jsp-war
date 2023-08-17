@@ -3,16 +3,16 @@ package com.examen.forge.app.domain.entities;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.examen.forge.app.domain.entities.manyToMany.UserSongEntity;
 import com.examen.forge.app.infraestructure.shared.BaseEntity;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -48,8 +48,6 @@ public class SongEntity extends BaseEntity {
   @JoinColumn(name = "creator_id")
   private UserEntity creator;
 
-  @ManyToMany(fetch = FetchType.LAZY)
-  @JsonIgnore
-  @JoinTable(name = "user_song", joinColumns = @JoinColumn(name = "song_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
-  private Set<UserEntity> users = new HashSet<>();
+  @OneToMany(mappedBy = "song", cascade = CascadeType.ALL)
+  private Set<UserSongEntity> users = new HashSet<>();
 }

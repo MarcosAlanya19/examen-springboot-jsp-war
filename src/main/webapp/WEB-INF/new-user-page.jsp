@@ -50,8 +50,8 @@ uri="http://www.springframework.org/tags/form" %> <%@ page import="com.examen.fo
               <form:label path="email">Email:</form:label>
               <form:input type="text" path="email" class="form-control mb-1 py-3" />
               <form:errors path="email" cssClass="error" />
-              <c:if test="${not empty errorMessage}">
-                <p class="text-danger">${errorMessage}</p>
+              <c:if test="${not empty emailError}">
+                <p class="text-danger">${emailError}</p>
               </c:if>
             </div>
 
@@ -64,7 +64,9 @@ uri="http://www.springframework.org/tags/form" %> <%@ page import="com.examen.fo
             <div class="mb-3">
               <form:label path="confirm">Confirmar contraseña:</form:label>
               <form:password path="confirm" class="form-control mb-1 py-3" />
-              <form:errors path="confirm" cssClass="error" />
+              <c:if test="${not empty confirmError}">
+                <p class="text-danger">${confirmError}</p>
+              </c:if>
             </div>
 
             <form:errors cssClass="text-danger" />

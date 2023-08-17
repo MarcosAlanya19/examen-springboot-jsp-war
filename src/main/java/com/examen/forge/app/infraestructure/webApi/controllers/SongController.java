@@ -1,7 +1,5 @@
 package com.examen.forge.app.infraestructure.webApi.controllers;
 
-import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.examen.forge.app.application.services.SongService;
 import com.examen.forge.app.application.services.UserService;
+import com.examen.forge.app.application.services.manyToMany.UserSongService;
 import com.examen.forge.app.domain.entities.SongEntity;
 import com.examen.forge.app.domain.entities.UserEntity;
 import com.examen.forge.config.AppConfig;
@@ -27,6 +26,9 @@ public class SongController {
 
   @Autowired
   UserService userService;
+
+  @Autowired
+  UserSongService userSongService;
 
   // Registro de una cancion
   @GetMapping({ AppConfig.ROUTE_ADD_SONG })
@@ -63,18 +65,17 @@ public class SongController {
   @GetMapping({ AppConfig.ROUTE_INDEX_SONG + "/{id}/detail" })
   public String songDetail(
       @PathVariable Long id, Model model, HttpSession session) {
+
     SongEntity song = songService.getById(id);
     model.addAttribute("song", song);
     Long userId = (Long) session.getAttribute(AppConfig.SESSION_USER);
+
     boolean isRegistration = userId != null;
     model.addAttribute("isRegistration", isRegistration);
 
     if (song != null) {
       UserEntity creator = song.getCreator();
       model.addAttribute("creator", creator);
-
-      Set<UserEntity> users = song.getUsers();
-      model.addAttribute("users", users);
 
       if (userId != null) {
         model.addAttribute("userIdInSession", userId);
@@ -92,21 +93,21 @@ public class SongController {
     model.addAttribute(AppConfig.MA_SONG, song);
     Long userId = (Long) session.getAttribute(AppConfig.SESSION_USER);
 
-    if (userId != null) {
-      if (song != null) {
-        UserEntity user = song.getCreator();
-        model.addAttribute(AppConfig.MA_USER, user);
-
-        boolean isCreator = userId != null && userId == song.getCreator().getId();
-        model.addAttribute("isCreator", isCreator);
-
-        if (!isCreator) {
-          model.addAttribute("lyrics", song.getLyrics());
-          song.setLyrics("");
-        }
-      }
-    } else {
+    if (userId == null) {
       return "redirect:/";
+    }
+
+    if (song != null) {
+      UserEntity user = song.getCreator();
+      model.addAttribute(AppConfig.MA_USER, user);
+
+      boolean isCreator = userId != null && userId == song.getCreator().getId();
+      model.addAttribute("isCreator", isCreator);
+
+      if (!isCreator) {
+        model.addAttribute("lyrics", song.getLyrics());
+        song.setLyrics("");
+      }
     }
 
     return AppConfig.JSP_EDIT_SONG;
@@ -114,24 +115,33 @@ public class SongController {
 
   @PostMapping({ AppConfig.POST_INDEX_SONG + "/{id}/edit" })
   public String songUpdate(
-      @PathVariable Long id, @ModelAttribute SongEntity updatedSong, HttpSession session) {
+      @Valid @PathVariable Long id, @ModelAttribute(AppConfig.MA_SONG) SongEntity updatedSong,
+      HttpSession session, BindingResult result, Model model) {
+
+    if (result.hasErrors()) {
+      return AppConfig.ROUTE_INDEX_SONG + "/" + id + "/edit";
+    }
+
     SongEntity song = songService.getById(id);
     Long userId = (Long) session.getAttribute(AppConfig.SESSION_USER);
-    UserEntity user = userService.getById(userId);
 
     if (song != null) {
       song.setCount(song.getCount() + 1);
       song.setTitle(updatedSong.getTitle());
       song.setGenre(updatedSong.getGenre());
 
-      if (user != null && user.equals(song.getCreator())) {
+      UserEntity user = userService.getById(userId);
+      UserEntity songCreator = song.getCreator();
+
+      if (user != null && user.equals(songCreator)) {
         song.setLyrics(updatedSong.getLyrics());
       } else if (updatedSong.getLyrics() != null) {
-        song.setLyrics(song.getLyrics() + " " + updatedSong.getLyrics());
+        String updatedLyrics = song.getLyrics() + " " + updatedSong.getLyrics();
+        song.setLyrics(updatedLyrics.trim());
       }
 
-      songService.createConnectUser(id, userId);
       songService.create(song);
+      userSongService.createUserSongRelation(user, song);
     }
 
     return "redirect:/" + AppConfig.ROUTE_INDEX_SONG + "/" + id + "/detail";

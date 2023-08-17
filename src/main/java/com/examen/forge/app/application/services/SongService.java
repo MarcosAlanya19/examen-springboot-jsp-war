@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.examen.forge.app.domain.entities.SongEntity;
-import com.examen.forge.app.domain.entities.UserEntity;
 import com.examen.forge.app.domain.repositories.SongRepository;
 import com.examen.forge.app.domain.repositories.UserRepository;
 import com.examen.forge.app.infraestructure.shared.BaseService;
@@ -20,14 +19,5 @@ public class SongService extends BaseService<SongEntity> {
   // Buscar song por el nombre
   public SongEntity getByTitle(String title) {
     return songRepository.findByTitle(title);
-  }
-
-  // Agregar sonido para usuario
-  public void createConnectUser(Long songId, Long userId) {
-    SongEntity song = songRepository.findById(songId).orElse(null);
-    UserEntity user = userRepository.findById(userId).orElse(null);
-
-    song.getUsers().add(user);
-    songRepository.save(song);
   }
 }

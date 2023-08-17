@@ -3,15 +3,13 @@ package com.examen.forge.app.domain.entities;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.examen.forge.app.domain.entities.manyToMany.UserSongEntity;
 import com.examen.forge.app.infraestructure.shared.BaseEntity;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import jakarta.validation.constraints.Email;
@@ -43,12 +41,8 @@ public class UserEntity extends BaseEntity {
   private String password;
 
   @Transient
-  @NotNull(message = "La confirmación de contraseña no puede ser nula")
-  @Size(min = 5, message = "La confirmación de contraseña debe tener más de 5 caracteres")
   private String confirm;
 
-  @ManyToMany(fetch = FetchType.LAZY)
-  @JsonIgnore
-  @JoinTable(name = "user_song", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "song_id"))
-  private Set<SongEntity> songs = new HashSet<>();
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+  private Set<UserSongEntity> songs = new HashSet<>();
 }
